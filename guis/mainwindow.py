@@ -133,6 +133,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
 
     ### modules for button connections
     def seriesSearchWindow(self):
+        print(self.series_lineEdit.text())
         a = SeriesSelect.Ui_series_search(self)
         a.series_search.show()
 
