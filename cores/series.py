@@ -1,9 +1,9 @@
 #try using tvdb api
 # https://api.thetvdb.com
 '''
-data = {"apikey": "047D9161230D8AED",
-			 "userkey": "167A6DDFFE15D5F8",
-			  "username": "rajesh_kootrapali"
+data = {"apikey": "xxx",
+			 "userkey": "xxx",
+			  "username": "xxx"
 			}
 	'''
 
@@ -52,7 +52,7 @@ class SeriesNAnime():
 									 headers = self.headers)
 			data = resp.json()['data']
 		except:
-			key = '{"apikey": "047D9161230D8AED", "userkey": "167A6DDFFE15D5F8", "username": "rajesh_kootrapali"}'
+			key = '{"apikey": "xxx", "userkey": "xxx", "username": "xxx"}'
 			resp = requests.post('https://api.thetvdb.com/login', headers = self.headers, data = key)
 			self.headers = {'Content-Type' : 'application/json', 'Accept': 'application/json',
 								'Authorization': 'Bearer {}'.format(resp.json()['token'])}
