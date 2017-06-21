@@ -16,8 +16,6 @@ from PyQt4 import QtGui
 def main():
     app = QtGui.QApplication(sys.argv)
     homepage = mainwindow.Ui_MainWindow()
-
-    #print(homepage.series_lineEdit.text())
     homepage.MainWindow.show()
 
      

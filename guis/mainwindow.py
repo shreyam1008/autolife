@@ -8,9 +8,6 @@
 
 
 
-#use this when running from this file
-# import SeriesSelect, MangaSelect, ClubSelect
-
 from guis import SeriesSelect, MangaSelect, ClubSelect
 
 
@@ -134,7 +131,7 @@ class Ui_MainWindow(QtGui.QMainWindow):
     ### modules for button connections
     def seriesSearchWindow(self):
         print(self.series_lineEdit.text())
-        a = SeriesSelect.Ui_series_search(self)
+        a = SeriesSelect.Ui_series_search(str(self.series_lineEdit.text()))
         a.series_search.show()
 
     def mangaSearchWindow(self):

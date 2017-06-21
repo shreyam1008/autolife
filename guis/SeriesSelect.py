@@ -27,12 +27,12 @@ except AttributeError:
 
 
 class Ui_series_search(QtGui.QWidget):
-    def __init__(self, parent = None ):
+    def __init__(self, series_name, parent = None ):
         super(Ui_series_search, self).__init__(parent)
 
         ##########################################
  
-        self.fromseries = series.SeriesNAnime(name = 'game of thrones', season = 1)
+        self.fromseries = series.SeriesNAnime(name = series_name, season = 1)
 
         # self.data = [    
         #             {'no': 0, 'seriesname': 'The Flash', 'date': '1990-09-20'},
