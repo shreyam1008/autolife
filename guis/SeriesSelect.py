@@ -91,13 +91,37 @@ class Ui_series_search(QtGui.QWidget):
         QtCore.QMetaObject.connectSlotsByName(self.series_search)
 
         ########################################################
-        self.set_table()
+        self.setTable()
+        self.setCombos()
 
-    def set_table(self):
+
+    def setTable(self):
         self.table = QtGui.QTableWidget(self.series_list_tableView)
         self.table.resize(291, 211)
         self.table.setColumnCount(3)
         self.table.setHorizontalHeaderLabels("name;start date;select;".split(";"))
+
+    def setCombos(self):
+         #combobox for season
+        self.comboBox = QtGui.QComboBox(self.series_search)
+        self.comboBox.setGeometry(QtCore.QRect(80, 300, 73, 22))
+        
+        #combobox for episode
+        self.comboBox_2 = QtGui.QComboBox(self.series_search)
+        self.comboBox_2.setGeometry(QtCore.QRect(310, 300, 73, 22))
+
+        #to generate season combobox
+        for x in range(self.count_row):
+            self.select_buttons[x].clicked.connect(functools.partial(self.seasonSelect, x))
+
+        #to generate episode combobox
+        self.comboBox.activated.connect(self.episodeSelect)
+
+    def episodeSelect(self):
+        print('season no is ', int(self.comboBox.currentText()))
+        #find total epi and add
+        for x in range(10):
+            self.comboBox_2.addItem(str(x))
 
     def retranslateUi(self, series_search):
         series_search.setWindowTitle(_translate("series_search", "Select your series", None))
