@@ -9,6 +9,7 @@
 ########### self added lines
 from cores import series
 ##########################
+import functools
 from PyQt4 import QtCore, QtGui
 
 try:
@@ -33,26 +34,6 @@ class Ui_series_search(QtGui.QWidget):
         ##########################################
  
         self.fromseries = series.SeriesNAnime(name = series_name, season = 1)
-
-        # self.data = [    
-        #             {'no': 0, 'seriesname': 'The Flash', 'date': '1990-09-20'},
-        #             {'no': 1, 'seriesname': 'Flash Gordon', 'date': '1936-04-06'},
-        #             {'no': 2, 'seriesname': "Flash Gordon's Trip to Mars", 'date': '1938-03-21'},
-        #             {'no': 3, 'seriesname': 'Flash Gordon: Space Soldiers', 'date': '1936-04-06'},
-        #             {'no': 4, 'seriesname': 'Flash Gordon Conquers the Universe', 'date': '1940-03-03'},
-        #             {'no': 5, 'seriesname': 'Flash Gordon (1996)', 'date': '1996-01-01'},
-        #             {'no': 6, 'seriesname': 'Flash Gordon (1954)', 'date': '1954-10-01'},
-        #             {'no': 7, 'seriesname': 'Flash Forward', 'date': '1997-01-05'},
-        #             {'no': 8, 'seriesname': 'The Flash (1967)', 'date': '1967-11-11'},
-        #             {'no': 9, 'seriesname': 'Flash Gordon (2007)', 'date': '2007-08-10'},
-        #             {'no': 10, 'seriesname': 'The Flash (2014)', 'date': '2014-10-07'},
-        #             {'no': 11, 'seriesname': 'Flash Gordon', 'date': '1936-04-06'},
-        #             {'no': 12, 'seriesname': 'Flashpoint', 'date': '2008-07-11'},
-        #             {'no': 13, 'seriesname': 'FlashForward', 'date': '2009-09-24'},
-        #             {'no': 14, 'seriesname': 'Cutey Honey Flash', 'date': '1997-02-15'},
-        #             {'no': 15, 'seriesname': 'Dirty Pair Flash', 'date': '1994-01-21'},
-        #             {'no': 16, 'seriesname': 'The New Animated Adventures of Flash Gordon', 'date': '1979-07-08'}
-        #         ]
 
         ############################################
         self.series_search = QtGui.QWidget()
@@ -101,6 +82,19 @@ class Ui_series_search(QtGui.QWidget):
         self.table.setColumnCount(3)
         self.table.setHorizontalHeaderLabels("name;start date;select;".split(";"))
 
+        self.count_row = sum(1 for _ in self.fromseries.samenames())
+
+        self.table.setRowCount(self.count_row)
+        self.table.setSelectionBehavior(QtGui.QTableWidget.SelectRows)
+
+        self.select_buttons = dict(enumerate([QtGui.QPushButton('this') for i in range(self.count_row + 1)]))
+
+        for x, tup in zip(range(self.count_row + 1), self.fromseries.samenames()) :
+            for y in range(self.count_row + 1):
+                if y == 0: self.table.setItem(x, y, QtGui.QTableWidgetItem(tup['seriesname']))
+                if y == 1: self.table.setItem(x, y, QtGui.QTableWidgetItem(tup['date']))
+                if y == 2: self.table.setCellWidget(x, y, self.select_buttons[x])
+
     def setCombos(self):
          #combobox for season
         self.comboBox = QtGui.QComboBox(self.series_search)
@@ -117,10 +111,16 @@ class Ui_series_search(QtGui.QWidget):
         #to generate episode combobox
         self.comboBox.activated.connect(self.episodeSelect)
 
+    def seasonSelect(self, ser_no):
+        print('series no is ', ser_no)
+        #change range to no of seaosn by search
+        for x in range(self.fromseries.seasonNumber()):
+            self.comboBox.addItem(str(x))
+
     def episodeSelect(self):
         print('season no is ', int(self.comboBox.currentText()))
         #find total epi and add
-        for x in range(10):
+        for x in range(sum(1 for _ in self.fromseries.epiList())):
             self.comboBox_2.addItem(str(x))
 
     def retranslateUi(self, series_search):

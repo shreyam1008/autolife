@@ -31,7 +31,7 @@ class SeriesNAnime():
 	def samenames(self):
 		for no, x in enumerate(self.data): yield{'no': no,'seriesname': x['seriesName'], 'date': x['firstAired']}
 
-	def seaosnNumber(self):
+	def seasonNumber(self):
 		resp = requests.get('https://api.thetvdb.com/series/{id}/episodes'.format(id = self.id),
 								 headers = self.headers)
 
@@ -82,10 +82,11 @@ class SeriesNAnime():
 			resp = requests.get('https://api.thetvdb.com/search/series?name={}'.format(self.series_name),
 									 headers = self.headers)
 			data = resp.json()['data']
+			self.data = data
 
 		# # temp = int(input('Enter the no of the series:'))
 		temp = 0
-		self.id = data[temp]['id']
+		self.id = self.data[temp]['id']
 
 
 		
@@ -99,7 +100,7 @@ def main():
 
 	for x in a.epiList(): print(x)
 
-	print(a.seaosnNumber())
+	print(a.seasonNumber())
 	
 	# for x in a.unseen(last_epi = 5): print(x)
 	# print(a.get_link())

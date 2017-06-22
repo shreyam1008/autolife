@@ -17,9 +17,7 @@ def main():
     app = QtGui.QApplication(sys.argv)
     homepage = mainwindow.Ui_MainWindow()
     homepage.MainWindow.show()
-
-     
-
+    
     sys.exit(app.exec_())
 
 
