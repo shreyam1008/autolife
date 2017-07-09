@@ -1,9 +1,8 @@
 #using api from themoviedb.org
-#api key api_key = 43bbcd5a5cc0c93679fefe0899614809
+#api key api_key =xxx
 
 
-#request token for today = 5461196738e7787b9120a0986db8d76f9d7353b2
-
+#request token for today = xxx
 import requests
 
 class Movies(object):
@@ -13,7 +12,7 @@ class Movies(object):
 		
 	def get_request_token(self):
 		url = "https://api.themoviedb.org/3/authentication/token/new"
-		data = {'api_key': '43bbcd5a5cc0c93679fefe0899614809'}
+		data = {'api_key': 'xxx'}
 		resp = requests.get(url,  data = data)
 
 		print(resp.text)
