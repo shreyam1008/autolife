@@ -6,6 +6,13 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+##########################
+from cores import football
+import functools
+import itertools
+
+##########################
+
 from PyQt4 import QtCore, QtGui
 
 try:
@@ -24,7 +31,13 @@ except AttributeError:
 
 class UiFootballSelect(QtGui.QWidget):
     def __init__(self, parent = None):
+        
         super(UiFootballSelect, self).__init__(parent)
+
+        #######################
+        self.fromFootball = football.Footy()
+        #######################
+        
         self.Form = QtGui.QWidget()
         self.Form.setObjectName(_fromUtf8("Form"))
         self.Form.resize(590, 358)
@@ -50,13 +63,40 @@ class UiFootballSelect(QtGui.QWidget):
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
 
+        self.setCombos()
+
         self.retranslateUi(self.Form)
         QtCore.QMetaObject.connectSlotsByName(self.Form)
 
+    def setCombos(self):
+        for x in self.fromFootball.Competition(season = 2017):
+            print(str(x['name']))
+            self.comboBox.addItem(str(x['name']))
+        self.comboBox.activated.connect(self.setCombo2)
+
+    def setCombo2(self, x):
+        num = self.comboBox.findText(str(self.comboBox.currentText()))
+        league_id = next(itertools.islice(self.fromFootball.Competition(season = 2017), num - 1, None))['id']
+
+        for x in self.fromFootball.CompetitionTeams(league_id = league_id):
+            self.comboBox_2.addItem(str(x['name']))
+
+        self.comboBox_2.activated.connect(functools.partial(self.foo, league_id))
+
+    def foo(self, league_id):
+        num2 = self.comboBox_2.findText(str(self.comboBox_2.currentText()))
+        team_id = next(itertools.islice(self.fromFootball.CompetitionTeams(league_id = league_id), num2 - 1, None))
+
+        print(num2)
+        print(team_id)
+
+
+
+
+
     def retranslateUi(self, Form):
+        
         Form.setWindowTitle(_translate("Form", "Select your club", None))
-        self.comboBox.setItemText(0, _translate("Form", "league placeholder", None))
-        self.comboBox_2.setItemText(0, _translate("Form", "team place holder", None))
         self.label.setText(_translate("Form", "Select the league", None))
         self.label_2.setText(_translate("Form", "Select the team", None))
 
@@ -67,4 +107,6 @@ if __name__ == "__main__":
     a = UiFootballSelect()
     a.Form.show()
     sys.exit(app.exec_())
+
+
 
