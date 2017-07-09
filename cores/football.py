@@ -1,5 +1,5 @@
 #from http://football-data.org api
-#api key = 7471c49d30b84a4496de867375dac63f
+#api key = xxx
 
 import requests
 
@@ -7,7 +7,7 @@ import requests
 class Footy:
 	
 	def __init__(self):
-		self.headers = {'X-Auth-Token': '7471c49d30b84a4496de867375dac63f'}
+		self.headers = {'X-Auth-Token': 'xxx'}
 
 	def Competition(self, season):
 		resp = requests.get('http://api.football-data.org/v1/competitions/?season={season}'.format(season = season), 
