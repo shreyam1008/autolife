@@ -14,7 +14,7 @@ class SeriesNAnime():
 
 	def __init__(self, name, season):
 		self.headers = {'Content-Type' : 'application/json', 'Accept': 'application/json',
-						 'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE0OTYwNzI0NTAsImlkIjoibWFuZ2FyZWFkZXIiLCJvcmlnX2lhdCI6MTQ5NTk4NjA1MCwidXNlcmlkIjo0Nzk5MTksInVzZXJuYW1lIjoicmFqZXNoX2tvb3RyYXBhbGkifQ.rN036_yLRICT1-r7QI6EANVZBmixburmc7ol05EXg-k7j-GWMHPBio7qFdfroxm_-YdZlvOf0RE94UGF5W0rIIZ2-5FfykYJ6yE8YBrr12nKDf1Fu_evHpqFHo0DqfOd3r0EDhxsxOOPSuWGLGRKIfYrMK6uVTpOWItAy_Aj-v06csyfDRed-ZS1hRIJdVd7qTJwcbrD-U4Xz5BHQkqNXnqsrhyAqsKkUvgOo37vPpB-gjB0GiC7sXJTa-cXRwklFfpw95KpjZBsxc3odtgWP43-oKS3b9x0L5JBlA7H8G6457XL-puKinZlTofyjPuN_UF0fUayPkLo1okBTTFF1A'}
+						 'Authorization': 'xxx'}
 		self.series_name = name
 		self.season = season
 
