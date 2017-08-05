@@ -1,5 +1,5 @@
 #from http://football-data.org api
-#api key = xxx
+#api key = 7471c49d30b84a4496de867375dac63f
 
 import requests
 
@@ -7,7 +7,7 @@ import requests
 class Footy:
 	
 	def __init__(self):
-		self.headers = {'X-Auth-Token': 'xxx'}
+		self.headers = {'X-Auth-Token': '7471c49d30b84a4496de867375dac63f'}
 
 	def Competition(self, season):
 		resp = requests.get('http://api.football-data.org/v1/competitions/?season={season}'.format(season = season), 
@@ -17,6 +17,7 @@ class Footy:
 					'name' : resp.json()[x]['caption']
 				}
 
+
 	def CompetitionTeams(self, league_id):
 		import re
 		resp = requests.get('http://api.football-data.org/v1/competitions/{league_id}/teams'.format(league_id = league_id), 
@@ -25,6 +26,7 @@ class Footy:
 			yield{'team_id': re.findall(r"\/teams\/(\d{2,3})", str(x['_links']))[0],
 					 'name' : x['name']
 				}
+
 
 	def LeagueTable(self, league_id):
 		resp = requests.get('http://api.football-data.org/v1/competitions/{league_id}/leagueTable'.format(league_id = league_id),
@@ -38,6 +40,7 @@ class Footy:
 							'goalDifference': x['goalDifference']
 			}
 
+
 	def TeamFixtures(self, team_id):
 		resp =  requests.get('http://api.football-data.org/v1/teams/{team_id}/fixtures'.format(team_id = team_id),
 						headers = self.headers)
@@ -49,7 +52,7 @@ class Footy:
 					 		 'awayTeamName': x['awayTeamName'],
 				}
 
-
+				
 	def TeamPlayers(self, team_id):
 		resp = requests.get('http://api.football-data.org/v1/teams/{team_id}/players'.format(team_id = team_id),
 						headers = self.headers)
@@ -60,19 +63,17 @@ class Footy:
 			}
 
 
-
-
 def main():
 	pass
-	#a = Footy()
+	a = Footy()
 
-	# for x in a.Competition(season = 2016): print(x)
+	for x in a.Competition(season = 2016): print(x)
 
 	# for x in a.CompetitionTeams(league_id = 426): print(x)
 
 	# for x in a.LeagueTable(league_id = 426): print(x)
 
-	# for x in a.TeamFixtures(team_id = 65): print(x)
+	for x in a.TeamFixtures(team_id = 65): print(x)
 
 	# for x in a.TeamPlayers(team_id = 65): print(x)
 

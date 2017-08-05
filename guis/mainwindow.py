@@ -9,6 +9,8 @@
 
 
 from guis import SeriesSelect, MangaSelect, ClubSelect
+import DatabaseManager
+import webbrowser
 
 
 from PyQt4 import QtCore, QtGui
@@ -120,32 +122,63 @@ class Ui_MainWindow(QtGui.QMainWindow):
         self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(self.MainWindow)
 
-
         ###button connections
-        self.series_search_pushButton.clicked.connect(self.seriesSearchWindow)
-        self.series_search_pushButton_4.clicked.connect(self.mangaSearchWindow)
         self.football_addteam_pushbutton.clicked.connect(self.footballSearchWindow)
+        self.series_search_pushButton_4.clicked.connect(self.mangaSearchWindow)
         self.series_search_pushButton_3.clicked.connect(self.moviesSearchWindow)
 
+        
+        ##adding table to main window to display main data
+        self.series_search_pushButton.clicked.connect(self.seriesSearchWindow)
+        self.table = QtGui.QTableWidget(self.tab_series)
+        self.table.setGeometry(QtCore.QRect(30, 50, 800, 500))
+        self.table.setColumnCount(4)
+        self.table.setHorizontalHeaderLabels("series name; season;latest epi; link".split(";"))
+        self.setTableData()
 
-    ### modules for button connections
+
+    def setTableData(self):
+        self.db = DatabaseManager.DatabaseForAll(tablename = 'series_table')
+        for vsk in self.db.GetTable():
+            print(vsk[0], vsk[1], vsk[2], vsk[3], vsk[4])
+        self.count_row = sum(1 for _ in self.db.GetTable())
+        print(self.count_row)
+        self.table.setRowCount(self.count_row)
+        self.table.setSelectionBehavior(QtGui.QTableWidget.SelectRows)
+
+        self.link_buttons = dict(enumerate([QtGui.QPushButton('Goto site') for i in range(self.count_row + 1)]))
+
+
+        for x, tup in zip(range(self.count_row+1), self.db.GetTable()):
+            for y in range(self.count_row+1):
+                if y == 0: self.table.setItem(x, y, QtGui.QTableWidgetItem(str(tup[1])))
+                if y == 1: self.table.setItem(x, y, QtGui.QTableWidgetItem(str(tup[2])))
+                if y == 2: self.table.setItem(x, y, QtGui.QTableWidgetItem(str(tup[3])))
+                if y == 3: self.table.setCellWidget(x, y, self.link_buttons[x])
+
+        for x, tup in zip(range(self.count_row), self.db.GetTable()):
+            self.link_buttons[x].clicked.connect(lambda: webbrowser.open(tup[4]))
+
+
+    ### modules for buttn connections
     def seriesSearchWindow(self):
+
         print(self.series_lineEdit.text())
         a = SeriesSelect.Ui_series_search(str(self.series_lineEdit.text()))
         a.series_search.show()
 
-    def mangaSearchWindow(self):
-        a = MangaSelect.UiMangaSelect(self)
+    def footballSearchWindow(self):
+
+        a = ClubSelect.UiFootballSelect(self)
         a.Form.show()
 
-    def footballSearchWindow(self):
-        a = ClubSelect.UiFootballSelect(self)
+    def mangaSearchWindow(self):
+
+        a = MangaSelect.UiMangaSelect()
         a.Form.show()
 
     def moviesSearchWindow(self):
         pass
-
-
 
 
     def retranslateUi(self, MainWindow):

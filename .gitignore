@@ -1,4 +1,6 @@
 
-autolife/
 *.pyc
+*.ini
+*.pyc
+guis/__pycache__/mainwindow.cpython-36.pyc
 *.pyc

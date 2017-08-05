@@ -8,7 +8,10 @@
 
 ########### self added lines
 from cores import series
+import DatabaseManager
 ##########################
+
+import sys
 import functools
 from PyQt4 import QtCore, QtGui
 
@@ -34,6 +37,7 @@ class Ui_series_search(QtGui.QWidget):
         ##########################################
  
         self.fromseries = series.SeriesNAnime(name = series_name, season = 1)
+        
 
         ############################################
         self.series_search = QtGui.QWidget()
@@ -75,7 +79,10 @@ class Ui_series_search(QtGui.QWidget):
         self.setTable()
         self.setCombos()
 
+        self.buttonBox.accepted.connect(self.setData)
+        self.buttonBox.rejected.connect(lambda: self.close())
 
+      
     def setTable(self):
         self.table = QtGui.QTableWidget(self.series_list_tableView)
         self.table.resize(291, 211)
@@ -122,6 +129,20 @@ class Ui_series_search(QtGui.QWidget):
         #find total epi and add
         for x in range(sum(1 for _ in self.fromseries.epiList())):
             self.comboBox_2.addItem(str(x))
+
+    def setData(self):
+        print(self.fromseries.series_name, self.comboBox.currentText(), self.comboBox_2.currentText())
+        self.db = DatabaseManager.DatabaseForAll(tablename = "series_table")
+        self.db.AddToTable(name = self.fromseries.series_name,
+                                season = self.comboBox.currentText(),
+                                     last_epi = self.comboBox_2.currentText(),
+                                        link = self.fromseries.get_link()
+                            )
+
+
+
+
+    
 
     def retranslateUi(self, series_search):
         series_search.setWindowTitle(_translate("series_search", "Select your series", None))

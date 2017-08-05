@@ -8,9 +8,11 @@ class DatabaseForAll:
 		self.CreateTable()
 
 	def CreateTable(self):
+		
 		if self.tablename ==  'login_table':
 			cmd = '''CREATE TABLE IF NOT EXISTS login_table (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-		 				username TEXT, password TEXT)'''
+						username TEXT, password TEXT)'''
+
 		if self.tablename ==  'series_table':
 			cmd = '''CREATE TABLE IF NOT EXISTS series_table (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 						name TEXT, season INT, last_epi text, link text)''' 
@@ -19,10 +21,11 @@ class DatabaseForAll:
 		if self.tablename == 'movie_table':
 			pass
 		if self.tablename == 'manga_table':
+			pass
 		if self.tablename == 'song_table':
 			pass
 		self.db.execute(cmd)
-			pass
+			
 		self.db.commit()
 
 	def AddToTable(self, **kwargs):
@@ -41,6 +44,7 @@ class DatabaseForAll:
 		if self.tablename == 'song_table':
 			pass
 		self.db.commit()
+
 
 	def GetTable(self):
 		self.CreateTable()

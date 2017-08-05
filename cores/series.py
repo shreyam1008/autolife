@@ -26,7 +26,8 @@ class SeriesNAnime():
 		for x in data:
 			if(x['airedSeason'] == self.season):
 				yield{'epi_name':x['episodeName'],
-						'epi_number':x['airedEpisodeNumber']}
+						'epi_number':x['airedEpisodeNumber']
+					}
 
 	def samenames(self):
 		for no, x in enumerate(self.data): yield{'no': no,'seriesname': x['seriesName'], 'date': x['firstAired']}
@@ -53,7 +54,8 @@ class SeriesNAnime():
 			if ((x['airedSeason'] == self.season) and (x['airedEpisodeNumber'] >= last_epi + 1)):
 				yield{'epi_number' : x['airedEpisodeNumber'],
 						 'epi_name' : x['episodeName'],
-							 'aired_date' : x['firstAired']}
+							 'aired_date' : x['firstAired']
+					}
 
 	def get_link(self):
 		import bs4 as bs
