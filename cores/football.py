@@ -67,7 +67,7 @@ def main():
 	pass
 	a = Footy()
 
-	for x in a.Competition(season = 2016): print(x)
+	# for x in a.Competition(season = 2016): print(x)
 
 	# for x in a.CompetitionTeams(league_id = 426): print(x)
 

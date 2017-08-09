@@ -16,16 +16,35 @@ class DatabaseForAll:
 		if self.tablename ==  'series_table':
 			cmd = '''CREATE TABLE IF NOT EXISTS series_table (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 						name TEXT, season INT, last_epi text, link text)''' 
+		
+		if self.tablename == 'football_table':
+			cmd = '''CREATE TABLE IF NOT EXISTS football_table (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+						team_name TEXT, team_id TEXT)''' 
+		if self.tablename == 'manga_table':
+			cmd = '''CREATE TABLE IF NOT EXISTS manga_table (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+						manga_name TEXT, chapter_no INT)'''
+		if self.tablename == 'song_table':
+			pass
+		self.db.execute(cmd)
+			
+		self.db.commit()
+
+	def updateTable(self, **kwargs):
+		
+		if self.tablename ==  'login_table':
+			pass
+		if self.tablename ==  'series_table':
+			self.db.execute('UPDATE series_table SET last_epi = last_epi + 1 WHERE ID = ?',
+								(kwargs.get('ID'),)) 
 		if self.tablename == 'football_table':
 			pass
 		if self.tablename == 'movie_table':
 			pass
 		if self.tablename == 'manga_table':
-			pass
+			self.db.execute('UPDATE manga_table SET chapter_no = chapter_no + 1 WHERE ID = ?',
+								(kwargs.get('ID'),)) 
 		if self.tablename == 'song_table':
 			pass
-		self.db.execute(cmd)
-			
 		self.db.commit()
 
 	def AddToTable(self, **kwargs):
@@ -36,15 +55,17 @@ class DatabaseForAll:
 			self.db.execute('INSERT INTO series_table (name, season, last_epi, link) VALUES (?, ?, ?, ?)',
 								 (kwargs.get('name'), kwargs.get('season', 1), kwargs.get('last_epi', 1), kwargs.get('link', 'www.gomovies.to'))) 
 		if self.tablename == 'football_table':
-			pass
+			self.db.execute('INSERT INTO football_table (team_id, team_name) VALUES (?, ?)',
+								 (kwargs.get('team_id'), kwargs.get('team_name'))) 
 		if self.tablename == 'movie_table':
 			pass
 		if self.tablename == 'manga_table':
-			pass
+			self.db.execute('INSERT INTO manga_table (manga_name, chapter_no) VALUES (?, ?)',
+								 (kwargs.get('manga_name'), kwargs.get('chapter_no')))
 		if self.tablename == 'song_table':
 			pass
 		self.db.commit()
-
+		
 
 	def GetTable(self):
 		self.CreateTable()

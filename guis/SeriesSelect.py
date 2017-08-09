@@ -72,8 +72,7 @@ class Ui_series_search(QtGui.QWidget):
         self.label_3.setGeometry(QtCore.QRect(250, 300, 53, 16))
         self.label_3.setObjectName(_fromUtf8("label_3"))
 
-        self.retranslateUi(self.series_search)
-        QtCore.QMetaObject.connectSlotsByName(self.series_search)
+        
 
         ########################################################
         self.setTable()
@@ -81,6 +80,9 @@ class Ui_series_search(QtGui.QWidget):
 
         self.buttonBox.accepted.connect(self.setData)
         self.buttonBox.rejected.connect(lambda: self.close())
+
+        self.retranslateUi(self.series_search)
+        QtCore.QMetaObject.connectSlotsByName(self.series_search)
 
       
     def setTable(self):
@@ -137,12 +139,7 @@ class Ui_series_search(QtGui.QWidget):
                                 season = self.comboBox.currentText(),
                                      last_epi = self.comboBox_2.currentText(),
                                         link = self.fromseries.get_link()
-                            )
-
-
-
-
-    
+                            )    
 
     def retranslateUi(self, series_search):
         series_search.setWindowTitle(_translate("series_search", "Select your series", None))

@@ -6,6 +6,10 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+import DatabaseManager
+
+
+
 from PyQt4 import QtCore, QtGui
 
 try:
@@ -22,9 +26,15 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class UiMangaSelect(QtGui.QWidget):
-    def __init__(self, parent = None):
-        super(UiMangaSelect, self).__init__(parent)
+class UiMangaSelect():
+    def __init__(self, manga_name, parent = None):
+        # super(UiMangaSelect, self).__init__(parent)
+
+        self.manga_name = manga_name
+        print(self.manga_name)
+
+
+
         self.Form = QtGui.QWidget()
         self.Form.setObjectName(_fromUtf8("Form"))
         self.Form.resize(400, 164)
@@ -39,18 +49,41 @@ class UiMangaSelect(QtGui.QWidget):
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
 
+
+        self.setCombos()
+        self.buttonBox.accepted.connect(self.setData)
+        self.buttonBox.rejected.connect(lambda: self.close())
+
+
         self.retranslateUi(self.Form)
         QtCore.QMetaObject.connectSlotsByName(self.Form)
+
+
+    def setCombos(self):
+        for x in range(800):
+            self.comboBox.addItem(str(x))
+        # self.comboBox.activated.connect(self.sendToDatabase)
+
+    def setData(self):
+        self.db = DatabaseManager.DatabaseForAll(tablename = 'manga_table')
+        self.db.AddToTable(manga_name = self.manga_name, chapter_no = int(self.comboBox.currentText()))
+        
+        print('added to dataase')
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Select manga", None))
         self.label.setText(_translate("Form", "From which episode you want to track:", None))
 
 
-if __name__ == "__main__":
+def main():
     import sys
     app = QtGui.QApplication(sys.argv)
-    a = UiMangaSelect()
-    a.Form.show()
+    dis = UiMangaSelect()
+    dis.Form.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()
+    
 

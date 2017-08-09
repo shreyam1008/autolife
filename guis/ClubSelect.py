@@ -8,6 +8,7 @@
 
 ##########################
 from cores import football
+import DatabaseManager
 import functools
 import itertools
 
@@ -65,8 +66,20 @@ class UiFootballSelect(QtGui.QWidget):
 
         self.setCombos()
 
+        ##adding image
+        
+
         self.retranslateUi(self.Form)
         QtCore.QMetaObject.connectSlotsByName(self.Form)
+
+
+        self.buttonBox.accepted.connect(self.setData)
+        self.buttonBox.rejected.connect(lambda: self.close())
+
+    def addImage(self):
+        # url = self.fromFootball.
+        print(self.league_id, self.team_id['team_id'])
+
 
     def setCombos(self):
         for x in self.fromFootball.Competition(season = 2017):
@@ -76,25 +89,30 @@ class UiFootballSelect(QtGui.QWidget):
 
     def setCombo2(self, x):
         num = self.comboBox.findText(str(self.comboBox.currentText()))
-        league_id = next(itertools.islice(self.fromFootball.Competition(season = 2017), num - 1, None))['id']
+        self.league_id = next(itertools.islice(self.fromFootball.Competition(season = 2017), num - 1, None))['id']
 
-        for x in self.fromFootball.CompetitionTeams(league_id = league_id):
+        for x in self.fromFootball.CompetitionTeams(league_id = self.league_id):
             self.comboBox_2.addItem(str(x['name']))
 
-        self.comboBox_2.activated.connect(functools.partial(self.foo, league_id))
+        self.comboBox_2.activated.connect(functools.partial(self.foo, self.league_id))
 
     def foo(self, league_id):
         num2 = self.comboBox_2.findText(str(self.comboBox_2.currentText()))
-        team_id = next(itertools.islice(self.fromFootball.CompetitionTeams(league_id = league_id), num2 - 1, None))
+        self.team_id = next(itertools.islice(self.fromFootball.CompetitionTeams(league_id = league_id), num2 - 1, None))
 
         print(num2)
-        print(team_id)
+        print(self.team_id)
 
 
-
+    def setData(self):
+        self.db = DatabaseManager.DatabaseForAll(tablename = "football_table")
+        self.db.AddToTable(team_id = self.team_id['team_id'],
+                                team_name = self.team_id['name']
+                            )
 
 
     def retranslateUi(self, Form):
+
         
         Form.setWindowTitle(_translate("Form", "Select your club", None))
         self.label.setText(_translate("Form", "Select the league", None))
